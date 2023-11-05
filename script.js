@@ -1,8 +1,5 @@
 'use strict';
 
-///////////////////////////////////////
-// Modal window
-
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
@@ -11,6 +8,11 @@ const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 
 const section1 = document.getElementById('section--1');
+
+const links = document.querySelectorAll('.nav__link');
+
+///////////////////////////////////////
+////* Modal window */
 
 const openModal = function (e) {
     e.preventDefault();
@@ -36,6 +38,8 @@ document.addEventListener('keydown', function (e) {
     }
 });
 
+///////////////////////////////////////
+////* Scrolling sections */
 btnScrollTo.addEventListener('click', function (e) {
     // get the coordinates
     const s1coords = section1.getBoundingClientRect();
@@ -57,9 +61,26 @@ btnScrollTo.addEventListener('click', function (e) {
     // section1.scrollIntoView({ behavior: 'smooth' });
 });
 
-/* ///////////////////////////////////////////////////////////////////
-// Selecting Elements
-console.log(document.documentElement);
+///////////////////////////////////////
+////* Page navigation */
+
+// Event Delegation
+// 1. Add event listener to common parent element
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+    e.preventDefault();
+    // 2. Determine what element originated the event
+
+    // Matching strategy
+    if (e.target.classList.contains('nav__link')) {
+        const id = e.target.getAttribute('href');
+        document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+    }
+});
+
+////////////////////////////////////////////////////////////////////
+///////* Selecting Elements */
+////////////////////////////////////////////////////////////////////
+/* console.log(document.documentElement);
 console.log(document.head);
 console.log(document.body);
 
@@ -99,12 +120,12 @@ document.querySelector('.btn--close-cookie').addEventListener('click', function 
     // message.remove();
     // an old way
     message.parentElement.removeChild(message);
-});
+}); */
 ///////////////////////////////////////////////////////////////////
 // Styles, attributes and classes
 //////////////////////////////////////////////////////////////////
 // Style
-message.style.backgroundColor = '#37383d';
+/* message.style.backgroundColor = '#37383d';
 message.style.width = '110%';
 // get style from browser
 console.log(getComputedStyle(message).color);
@@ -144,3 +165,39 @@ logo.classList.toggle('c');
 logo.classList.contains('j');
 logo.classList.remove('c', 'j');
  */
+///////////////////////////////////////////////////////////////////
+/////////* Events and Event handlers */
+//////////////////////////////////////////////////////////////////
+// const h1 = document.querySelector('h1');
+
+// const alertH1 = function (e) {
+//     alert('addEventListener: Great! You are reading the heading!');
+//     // h1.removeEventListener('mouseenter', alertH1);
+// };
+
+// h1.addEventListener('mouseenter', alertH1);
+// setTimeout(() => h1.removeEventListener('mouseenter', alertH1), 3000);
+// Old school
+/* h1.onmouseenter = function (e) {
+    alert('addEventListener: Great! You are reading the heading');
+}; */
+////////////////////////////////////////////////////////////////
+///// Bubbling and capturing phases of Event Propagation
+/* const randomInt = (min, max) => Math.floor(Math.random() * (max - min + 1) + min);
+const randomColor = () => `rgb(${randomInt(0, 255)},${randomInt(0, 255)},${randomInt(0, 255)})`;
+
+document.querySelector('.nav__link').addEventListener('click', function (e) {
+    this.style.backgroundColor = randomColor();
+    console.log('LINK', e.target, e.currentTarget);
+
+    // Stop propagation
+    // e.stopPropagation();
+});
+document.querySelector('.nav__links').addEventListener('click', function (e) {
+    this.style.backgroundColor = randomColor();
+    console.log('CONTAINER', e.target, e.currentTarget);
+});
+document.querySelector('.nav').addEventListener('click', function (e) {
+    this.style.backgroundColor = randomColor();
+    console.log('NAV', e.target, e.currentTarget);
+}); */
