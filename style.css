@@ -665,10 +665,11 @@ h4 {
 .cookie-message {
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
-  width: 100%;
+  justify-content: space-around;
+  width: 110%;
   background-color: white;
   color: #bbb;
   font-size: 1.5rem;
   font-weight: 400;
+  padding: 2rem 1.5rem;
 }
