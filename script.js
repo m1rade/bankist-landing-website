@@ -1,18 +1,11 @@
 'use strict';
 
+///////////////////////////////////////
+////* Modal window */
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
-
-const btnScrollTo = document.querySelector('.btn--scroll-to');
-
-const section1 = document.getElementById('section--1');
-
-const links = document.querySelectorAll('.nav__link');
-
-///////////////////////////////////////
-////* Modal window */
 
 const openModal = function (e) {
     e.preventDefault();
@@ -40,6 +33,9 @@ document.addEventListener('keydown', function (e) {
 
 ///////////////////////////////////////
 ////* Scrolling sections */
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.getElementById('section--1');
+
 btnScrollTo.addEventListener('click', function (e) {
     // get the coordinates
     const s1coords = section1.getBoundingClientRect();
@@ -75,6 +71,28 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
         const id = e.target.getAttribute('href');
         document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
     }
+});
+
+///////////////////////////////////////
+////* Tabbed content */
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContent = document.querySelectorAll('.operations__content');
+
+tabsContainer.addEventListener('click', function (e) {
+    const clicked = e.target.closest('.operations__tab');
+
+    // Guard clause
+    if (!clicked) return;
+
+    // Remove active classes
+    tabs.forEach(tab => tab.classList.remove('operations__tab--active'));
+    tabsContent.forEach(tContent => tContent.classList.remove('operations__content--active'));
+
+    // Change active tab
+    clicked.classList.add('operations__tab--active');
+    // Activate content area
+    tabsContent[clicked.dataset.tab - 1].classList.add('operations__content--active');
 });
 
 ////////////////////////////////////////////////////////////////////
@@ -200,4 +218,37 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
 document.querySelector('.nav').addEventListener('click', function (e) {
     this.style.backgroundColor = randomColor();
     console.log('NAV', e.target, e.currentTarget);
+}); */
+////////////////////////////////////////////////////
+//////* DOM Traversing */
+/* const h1 = document.querySelector('h1');
+// Going downwards: child
+console.log(h1.querySelectorAll('.highlight'));
+// Get all direct children
+// console.log(h1.childNodes);
+console.log(h1.children); // HTML Collection
+
+h1.firstElementChild.style.color = 'white';
+h1.lastElementChild.style.color = 'orangered';
+
+// Going upwards: parents
+console.log(h1.parentNode);
+console.log(h1.parentElement);
+
+// Find a parent element no matter how far away it is in the DOM tree
+// The closest method will select the closest parent element to our h1 element with
+// header class. It is almost the opposite of querySelector
+h1.closest('.header').style.background = `var(--gradient-secondary)`;
+
+// Going sideways: siblings
+// We can only access direct siblings, only the previous and the next one
+console.log(h1.previousElementSibling);
+console.log(h1.nextElementSibling);
+
+console.log(h1.previousSibling);
+console.log(h1.nextSibling);
+// All of the siblings
+console.log(h1.parentElement.children); // HTMLCollection
+[...h1.parentElement.children].forEach(function (el) {
+    if (el !== h1) el.style.transform = 'scale(0.5)';
 }); */
