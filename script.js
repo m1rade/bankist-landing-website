@@ -1,12 +1,22 @@
 'use strict';
 
-///////////////////////////////////////
-////* Modal window */
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.getElementById('section--1');
+
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContent = document.querySelectorAll('.operations__content');
+
+const nav = document.querySelector('.nav');
+const navLinks = document.querySelector('.nav__links');
+
+///////////////////////////////////////
+////* Modal window */
 const openModal = function (e) {
     e.preventDefault();
     modal.classList.remove('hidden');
@@ -33,9 +43,6 @@ document.addEventListener('keydown', function (e) {
 
 ///////////////////////////////////////
 ////* Scrolling sections */
-const btnScrollTo = document.querySelector('.btn--scroll-to');
-const section1 = document.getElementById('section--1');
-
 btnScrollTo.addEventListener('click', function (e) {
     // get the coordinates
     const s1coords = section1.getBoundingClientRect();
@@ -62,7 +69,7 @@ btnScrollTo.addEventListener('click', function (e) {
 
 // Event Delegation
 // 1. Add event listener to common parent element
-document.querySelector('.nav__links').addEventListener('click', function (e) {
+navLinks.addEventListener('click', function (e) {
     e.preventDefault();
     // 2. Determine what element originated the event
 
@@ -75,10 +82,6 @@ document.querySelector('.nav__links').addEventListener('click', function (e) {
 
 ///////////////////////////////////////
 ////* Tabbed content */
-const tabsContainer = document.querySelector('.operations__tab-container');
-const tabs = document.querySelectorAll('.operations__tab');
-const tabsContent = document.querySelectorAll('.operations__content');
-
 tabsContainer.addEventListener('click', function (e) {
     const clicked = e.target.closest('.operations__tab');
 
@@ -95,6 +98,24 @@ tabsContainer.addEventListener('click', function (e) {
     tabsContent[clicked.dataset.tab - 1].classList.add('operations__content--active');
 });
 
+///////////////////////////////////////
+////* Menu fade animation */
+const handleHoverLinks = function (event) {
+    if (event.target.classList.contains('nav__link')) {
+        const link = event.target;
+        const siblings = link.closest('.nav').querySelectorAll('.nav__link');
+        const logo = link.closest('.nav').querySelector('.nav__logo');
+
+        siblings.forEach(s => {
+            if (s !== link) s.style.opacity = this;
+        });
+        logo.style.opacity = this;
+    }
+};
+
+// Passing "argument" into the handler
+nav.addEventListener('mouseover', handleHoverLinks.bind(0.5));
+nav.addEventListener('mouseout', handleHoverLinks.bind(1));
 ////////////////////////////////////////////////////////////////////
 ///////* Selecting Elements */
 ////////////////////////////////////////////////////////////////////
