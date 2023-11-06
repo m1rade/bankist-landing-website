@@ -142,6 +142,31 @@ const headerObs = new IntersectionObserver(stickyNav, {
     rootMargin: `-${navHeight}px`,
 });
 headerObs.observe(header);
+
+///////////////////////////////////////
+////* Revealing elements on scroll */
+const allSections = document.querySelectorAll('.section');
+
+const revealSection = function (entries, observer) {
+    const [entry] = entries;
+    console.log(entry);
+
+    if (!entry.isIntersecting) return;
+
+    entry.target.classList.remove('section--hidden');
+
+    observer.unobserve(entry.target);
+};
+
+const sectionsObs = new IntersectionObserver(revealSection, {
+    root: null,
+    threshold: 0.3,
+});
+allSections.forEach(section => {
+    sectionsObs.observe(section);
+    section.classList.add('section--hidden');
+});
+
 ////////////////////////////////////////////////////////////////////
 ///////* Selecting Elements */
 ////////////////////////////////////////////////////////////////////
