@@ -7,6 +7,7 @@ const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 
 const btnScrollTo = document.querySelector('.btn--scroll-to');
 const section1 = document.getElementById('section--1');
+const header = document.querySelector('.header');
 
 const tabsContainer = document.querySelector('.operations__tab-container');
 const tabs = document.querySelectorAll('.operations__tab');
@@ -55,8 +56,8 @@ btnScrollTo.addEventListener('click', function (e) {
 
     // Scrolling old method
     window.scrollTo({
-        left: s1coords.left + window.pageXOffset,
-        top: s1coords.top + window.pageYOffset,
+        left: s1coords.left + window.scrollX,
+        top: s1coords.top + window.scrollY,
         behavior: 'smooth',
     });
 
@@ -116,6 +117,31 @@ const handleHoverLinks = function (event) {
 // Passing "argument" into the handler
 nav.addEventListener('mouseover', handleHoverLinks.bind(0.5));
 nav.addEventListener('mouseout', handleHoverLinks.bind(1));
+
+///////////////////////////////////////
+////* Implement a sticky navbar */
+// The old varian
+/* const initCoords = section1.getBoundingClientRect();
+
+window.addEventListener('scroll', function (e) {
+    if (this.window.scrollY > initCoords.top) nav.classList.add('sticky');
+    else nav.classList.remove('sticky');
+}); */
+
+const navHeight = nav.getBoundingClientRect().height;
+
+const stickyNav = function (entries) {
+    const [entry] = entries;
+    if (!entry.isIntersecting) nav.classList.add('sticky');
+    else nav.classList.remove('sticky');
+};
+
+const headerObs = new IntersectionObserver(stickyNav, {
+    root: null,
+    threshold: 0,
+    rootMargin: `-${navHeight}px`,
+});
+headerObs.observe(header);
 ////////////////////////////////////////////////////////////////////
 ///////* Selecting Elements */
 ////////////////////////////////////////////////////////////////////
@@ -273,3 +299,16 @@ console.log(h1.parentElement.children); // HTMLCollection
 [...h1.parentElement.children].forEach(function (el) {
     if (el !== h1) el.style.transform = 'scale(0.5)';
 }); */
+////////////////////////////////////////////////////
+/* Intersection Observer API */
+/* const obsCallback = function(entries, observer) {
+    entries.forEach(e => console.log(e));
+}
+
+const obsOptions = {
+    root: null,
+    threshold: [0, 0.2],
+}
+
+const observer = new IntersectionObserver(obsCallback, obsOptions);
+observer.observe(section1); */
