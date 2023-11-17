@@ -1,27 +1,12 @@
 'use strict';
 
+///////////////////////////////////////
+////* Modal window */
 const modal = document.querySelector('.modal');
 const overlay = document.querySelector('.overlay');
 const btnCloseModal = document.querySelector('.btn--close-modal');
 const btnsOpenModal = document.querySelectorAll('.btn--show-modal');
 
-const btnScrollTo = document.querySelector('.btn--scroll-to');
-const section1 = document.getElementById('section--1');
-const header = document.querySelector('.header');
-
-const tabsContainer = document.querySelector('.operations__tab-container');
-const tabs = document.querySelectorAll('.operations__tab');
-const tabsContent = document.querySelectorAll('.operations__content');
-
-const nav = document.querySelector('.nav');
-const navLinks = document.querySelector('.nav__links');
-
-const slides = document.querySelectorAll('.slide');
-const sliderBtnLeft = document.querySelector('.slider__btn--left');
-const sliderBtnRight = document.querySelector('.slider__btn--right');
-
-///////////////////////////////////////
-////* Modal window */
 const openModal = function (e) {
     e.preventDefault();
     modal.classList.remove('hidden');
@@ -48,6 +33,9 @@ document.addEventListener('keydown', function (e) {
 
 ///////////////////////////////////////
 ////* Scrolling sections */
+const btnScrollTo = document.querySelector('.btn--scroll-to');
+const section1 = document.getElementById('section--1');
+
 btnScrollTo.addEventListener('click', function (e) {
     // get the coordinates
     const s1coords = section1.getBoundingClientRect();
@@ -71,6 +59,7 @@ btnScrollTo.addEventListener('click', function (e) {
 
 ///////////////////////////////////////
 ////* Page navigation */
+const navLinks = document.querySelector('.nav__links');
 
 // Event Delegation
 // 1. Add event listener to common parent element
@@ -87,6 +76,10 @@ navLinks.addEventListener('click', function (e) {
 
 ///////////////////////////////////////
 ////* Tabbed content */
+const tabsContainer = document.querySelector('.operations__tab-container');
+const tabs = document.querySelectorAll('.operations__tab');
+const tabsContent = document.querySelectorAll('.operations__content');
+
 tabsContainer.addEventListener('click', function (e) {
     const clicked = e.target.closest('.operations__tab');
 
@@ -105,6 +98,8 @@ tabsContainer.addEventListener('click', function (e) {
 
 ///////////////////////////////////////
 ////* Menu fade animation */
+const nav = document.querySelector('.nav');
+
 const handleHoverLinks = function (event) {
     if (event.target.classList.contains('nav__link')) {
         const link = event.target;
@@ -124,6 +119,8 @@ nav.addEventListener('mouseout', handleHoverLinks.bind(1));
 
 ///////////////////////////////////////
 ////* Implement a sticky navbar */
+const header = document.querySelector('.header');
+
 // The old varian
 /* const initCoords = section1.getBoundingClientRect();
 
@@ -196,36 +193,84 @@ imgTargets.forEach(img => imgObserver.observe(img));
 
 ///////////////////////////////////////
 ////* Slider component */
-const goToSlide = function (slide) {
-    slides.forEach((s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`));
+const slider = function () {
+    const slides = document.querySelectorAll('.slide');
+    const sliderBtnLeft = document.querySelector('.slider__btn--left');
+    const sliderBtnRight = document.querySelector('.slider__btn--right');
+    const dotContainer = document.querySelector('.dots');
+
+    let curSlide = 0;
+    const maxSlide = slides.length;
+
+    // Functions
+    const createDots = function () {
+        slides.forEach((_, i) => {
+            dotContainer.insertAdjacentHTML('beforeend', `<button class="dots__dot" data-slide="${i}"></button>`);
+        });
+    };
+
+    const activateDot = function (slide) {
+        document.querySelectorAll('.dots__dot').forEach(dot => {
+            dot.classList.remove('dots__dot--active');
+        });
+
+        document.querySelector(`.dots__dot[data-slide="${slide}"]`).classList.add('dots__dot--active');
+    };
+
+    const goToSlide = function (slide) {
+        slides.forEach((s, i) => (s.style.transform = `translateX(${100 * (i - slide)}%)`));
+    };
+
+    const nextSlide = function () {
+        if (curSlide == maxSlide - 1) {
+            curSlide = 0;
+        } else {
+            curSlide++;
+        }
+
+        goToSlide(curSlide);
+        activateDot(curSlide);
+    };
+
+    const prevSlide = function () {
+        if (curSlide == 0) {
+            curSlide = maxSlide - 1;
+        } else {
+            curSlide--;
+        }
+
+        goToSlide(curSlide);
+        activateDot(curSlide);
+    };
+
+    const initSlider = function () {
+        goToSlide(0);
+        createDots();
+        activateDot(0);
+    };
+
+    initSlider();
+
+    // Event handlers
+    sliderBtnRight.addEventListener('click', nextSlide);
+    sliderBtnLeft.addEventListener('click', prevSlide);
+
+    // to slide with arrow keys
+    document.addEventListener('keydown', function (e) {
+        e.key === 'ArrowLeft' && prevSlide();
+        e.key === 'ArrowRight' && nextSlide();
+    });
+
+    dotContainer.addEventListener('click', function (e) {
+        if (e.target.classList.contains('dots__dot')) {
+            const slide = e.target.dataset.slide;
+            curSlide = slide;
+            goToSlide(slide);
+            activateDot(slide);
+        }
+    });
 };
-
-goToSlide(0);
-
-let curSlide = 0;
-const maxSlide = slides.length;
-const nextSlide = function () {
-    if (curSlide === maxSlide - 1) {
-        curSlide = 0;
-    } else {
-        curSlide++;
-    }
-
-    goToSlide(curSlide);
-};
-const prevSlide = function () {
-    if (curSlide === 0) {
-        curSlide = maxSlide - 1;
-    } else {
-        curSlide--;
-    }
-
-    goToSlide(curSlide);
-};
-
-sliderBtnRight.addEventListener('click', nextSlide);
-sliderBtnLeft.addEventListener('click', prevSlide);
-
+slider();
 ////////////////////////////////////////////////////////////////////
 ///////* Selecting Elements */
 ////////////////////////////////////////////////////////////////////
