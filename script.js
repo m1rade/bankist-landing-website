@@ -271,6 +271,7 @@ const slider = function () {
     });
 };
 slider();
+
 ////////////////////////////////////////////////////////////////////
 ///////* Selecting Elements */
 ////////////////////////////////////////////////////////////////////
@@ -441,3 +442,15 @@ const obsOptions = {
 
 const observer = new IntersectionObserver(obsCallback, obsOptions);
 observer.observe(section1); */
+
+// document.addEventListener('DOMContentLoaded', function(e) {
+//     console.log('HTML parsed and DOM tree built',e);
+// });
+// window.addEventListener('load', function(e) {
+//     console.log('Page fully loaded', e);
+// })
+// confirm page leaving
+// window.addEventListener('beforeunload', function(e) {
+//     e.preventDefault();
+//     e.returnValue = "";
+// })
